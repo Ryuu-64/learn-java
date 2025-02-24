@@ -3,29 +3,26 @@ package org.ryuu;
 public class LearnInterrupt {
     public static void main(String[] args) {
         // 创建一个线程，模拟一个耗时操作
-        Thread workerThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    // 模拟一个长时间的阻塞操作
-                    System.out.println("Worker thread started. It's doing some work...");
-                    for (int i = 0; i < 5; i++) {
-                        // 模拟每次执行的任务
-                        System.out.println("Worker thread is working: " + (i + 1));
+        Thread workerThread = new Thread(() -> {
+            try {
+                // 模拟一个长时间的阻塞操作
+                System.out.println("Worker thread started. It's doing some work...");
+                for (int i = 0; i < 5; i++) {
+                    // 模拟每次执行的任务
+                    System.out.println("Worker thread is working: " + (i + 1));
 
-                        // 引发线程的阻塞，模拟实际工作的中断
-                        Thread.sleep(1000); // 模拟每次任务执行时的延时
-                    }
-                } catch (InterruptedException e) {
-                    // 捕获中断异常并恢复中断状态
-                    System.out.println("Worker thread was interrupted during sleep.");
-                    Thread.currentThread().interrupt();  // 恢复中断状态
+                    // 引发线程的阻塞，模拟实际工作的中断
+                    Thread.sleep(1000); // 模拟每次任务执行时的延时
                 }
+            } catch (InterruptedException e) {
+                // 捕获中断异常并恢复中断状态
+                System.out.println("Worker thread was interrupted during sleep.");
+                Thread.currentThread().interrupt();  // 恢复中断状态
+            }
 
-                // 检查是否被中断，如果中断了就退出
-                if (Thread.currentThread().isInterrupted()) {
-                    System.out.println("Worker thread is exiting due to interruption.");
-                }
+            // 检查是否被中断，如果中断了就退出
+            if (Thread.currentThread().isInterrupted()) {
+                System.out.println("Worker thread is exiting due to interruption.");
             }
         });
 
